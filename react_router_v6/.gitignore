@@ -11,6 +11,8 @@ lerna-debug.log*
 __pycache__/
 *.pyc
 .env
+backend/.env
+
 
 # Node
 node_modules/
