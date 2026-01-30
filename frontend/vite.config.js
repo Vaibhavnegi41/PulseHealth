@@ -7,6 +7,12 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    
+    build: {
+    target: 'esnext',       // modern JS for faster build
+    chunkSizeWarningLimit: 2000, // increase if you have large chunks
+    sourcemap: false,       // disable source maps for faster build
+  },
     server: {
       proxy: {
         // This handles local development only
