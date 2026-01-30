@@ -29,6 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 app=FastAPI()
 
 secret_key=SECRET_KEY
+
 algo="HS256"
 token_expires_minute=30
 
@@ -44,12 +45,17 @@ def verify_password(plain:str,hashed:str):
     hashlib_password=hashlib.sha256(plain.encode()).hexdigest()
     return pwd_context.verify(hashlib_password,hashed)
 
+origins = [
+    "http://localhost:5173",           # Local Vite development
+    "https://pulse-health-system.vercel.app", # Replace with your REAL Vercel URL
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,             
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 try:
@@ -91,6 +97,7 @@ def map_age_category(age:int):
 
 
 def get_connection():
+
     connection=sql.connect(
         host=DB_HOST,
         user=DB_USER,
@@ -108,6 +115,11 @@ def get_connection():
 class LoginDetails(BaseModel):
     email:EmailStr
     password:str
+
+@app.get("/")
+def home():
+    return {"message": "PulseHealth Backend Running"}
+
 
 def create_access_token(data:dict):
     to_encode=data.copy()
