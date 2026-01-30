@@ -17,8 +17,19 @@ load_dotenv()
 
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_NAME = os.getenv("DB_NAME")
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 
 app=FastAPI()
+
+secret_key=SECRET_KEY
+algo="HS256"
+token_expires_minute=30
 
 oauth_scheme=OAuth2PasswordBearer(tokenUrl="login")
 
@@ -77,12 +88,15 @@ def map_age_category(age:int):
 
     return 13
 
+
+
+
 def get_connection():
     connection=sql.connect(
-        host="localhost",
-        user="root",
-        password="vaibhav6208",
-        database="Healthy"
+        host=DB_HOST,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME
     )
 
     try:
@@ -94,16 +108,6 @@ def get_connection():
 class LoginDetails(BaseModel):
     email:EmailStr
     password:str
-
-EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-
-
-secret_key="something hidden from the user"
-algo="HS256"
-token_expires_minute=30
-
-
 
 def create_access_token(data:dict):
     to_encode=data.copy()
@@ -197,10 +201,6 @@ def login_user(register_details:LoginDetails,db=Depends(get_connection)):
         raise HTTPException(status_code=400,detail=str(e))
     
 
-
-
-
-# The exact order and names expected by your model 
 FEATURE_NAMES = [
     "HighBP", "HighChol", "CholCheck", "BMI", 
     "Smoker", "Stroke", "PhysicalActivity", 
@@ -213,57 +213,51 @@ async def predict_health(data: HealthInput,db=Depends(get_connection),current_us
     try:
 
         cursor=db.cursor()
-        # 1. PRE-PROCESSING: Convert form data to model-friendly features
+       
         bmi = data.weight / ((data.height / 100) ** 2)
         sex_val = 1 if data.sex.lower() == "male" else 0
         smoker_val = 1 if data.smoker.lower() == "yes" else 0
         stroke_val = 1 if data.stroke.lower() == "yes" else 0
         
-        # Mapping frontend activity to binary (Assuming 1/2 are active)
+       
         activity_val = 1 if str(data.activity) in ["1", "2"] else 0
         
-        # Derived features
+     
         high_bp = 1 if data.bp_systolic >= 140 else 0
         high_chol = 1 if data.cholesterol >= 200 else 0
         age_cat = map_age_category(data.age)
 
-        # 2. CREATE FEATURE DICTIONARY: Match the CSV structure 
-        # Note: We use default values for features not collected in your form 
-        # (like Income or MentHlth) to ensure the scaler gets all 17 columns.
+        
         processed_data = {
-            # Placeholder, usually 0 for general screening
+            
             "HighBP": high_bp,
             "HighChol": high_chol,
-            "CholCheck": 1,     # Assume 1 (checked) since they provided values
+            "CholCheck": 1,     
             "BMI": bmi,
             "Smoker": smoker_val,
             "Stroke": stroke_val,
 
             "PhysicalActivity": activity_val,
-            "HvyAlcoholConsump": 0,    # Placeholder
-            "AnyHealthcare": 1,        # Placeholder
-            "NoDocbcCost": 0,          # Placeholder
+            "HvyAlcoholConsump": 0,    
+            "AnyHealthcare": 1,        
+            "NoDocbcCost": 0,          
             "GenHlth": data.genHlth if hasattr(data, 'genHlth') else 3,
-            "MentHlth": 0,             # Placeholder
+            "MentHlth": 0,             
             "Sex": sex_val,
             "Age": age_cat,
-            "Income": 5                # Placeholder (Median value)
+            "Income": 5             
         }
 
-        # 3. BUILD DATAFRAME: Ensures correct column order and names 
         df = pd.DataFrame([processed_data])[FEATURE_NAMES]
 
-        # 4. SCALE & PREDICT: This removes the UserWarning
         features_scaled = scaler.transform(df)
 
-        # Use .predict_proba() if your models support it for more granular risk
         diab_prob = diabetes_model.predict_proba(features_scaled)[0][1]
         heart_prob = heart_model.predict_proba(features_scaled)[0][1]
 
         avg_risk = (diab_prob + heart_prob) / 2
         health_score = round(100 - (avg_risk * 100), 1)
 
-        # Define Risk Level
         risk = "Low"
         if avg_risk >= 0.3: risk = "Moderate"
         if avg_risk >= 0.6: risk = "High"
@@ -346,8 +340,6 @@ def delete_history(id:int,userEmail:str=Depends(get_current_users),db=Depends(ge
 
     except Exception as e:
         raise HTTPException(status_code=400,detail=str(e))
-
-
 
 
 def send_login_email(to_email: str):

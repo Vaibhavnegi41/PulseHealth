@@ -1,0 +1,15 @@
+# ENV
+.env
+backend/.env
+frontend/.env
+
+# NODE
+node_modules/
+
+# PYTHON
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
