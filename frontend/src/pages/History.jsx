@@ -35,17 +35,18 @@ const History = () => {
     if (userEmail) fetchHistory();
   }, [userEmail]);
 
-  const deleteRecord = async (id) => {
-    if (!window.confirm("Delete this prediction permanently?")) return;
+ const deleteRecord = async (id) => {
+  if (!window.confirm("Delete this prediction permanently?")) return;
 
-    try {
-      await api.delete(`/history/${id}`);
-      setHistory((prev) => prev.filter((item) => item.id !== id));
-      window.location.reload();
-    } catch {
-      alert("Failed to delete record");
-    }
-  };
+  try {
+    await api.delete(`/history/${id}`);
+
+    setHistory((prev) => prev.filter((item) => item[0] !== id));
+  } catch {
+    alert("Failed to delete record");
+  }
+};
+
 
   if (loading) {
     return <div className="loader">Loading your health history...</div>;
