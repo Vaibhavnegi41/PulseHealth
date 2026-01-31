@@ -46,9 +46,12 @@ def verify_password(plain:str,hashed:str):
     return pwd_context.verify(hashlib_password,hashed)
 
 origins = [
-    "http://localhost:5173",           # Local Vite development
-    "https://pulse-health-system.vercel.app", # Replace with your REAL Vercel URL
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://pulsehealth-fron.onrender.com",
+    "https://pulsehealth-fron.onrender.com/"
 ]
+
 
 app.add_middleware(
     CORSMiddleware,
