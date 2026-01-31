@@ -7,7 +7,7 @@ const Footer = () => {
         <p>
           Designed & Built by 
           <a 
-            href="https://github.com/your-username" 
+            href="https://github.com/Vaibhavnegi41/PulseHealth" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="footer-link"
