@@ -99,7 +99,7 @@ export const Login = () => {
           </button>
           
           <div className="form-footer">
-            <span>Don't have an account? <Link to="/signup">Sign Up</Link></span>
+            <span>Don't have an account? <Link to="/register">Sign Up</Link></span>
           </div>
         </form>
       )}
