@@ -182,7 +182,7 @@ def user_register(details: LoginDetails, db=Depends(get_connection)):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/login")
-def login_user(register_details: LoginDetails, db=Depends(get_connection), background_tasks: BackgroundTasks):
+def login_user(register_details: LoginDetails, db=Depends(get_connection), background_tasks=BackgroundTasks):
     try:
         cursor = db.cursor(buffered=True)
         cursor.execute("SELECT password FROM dataset WHERE email=%s", (register_details.email,))
