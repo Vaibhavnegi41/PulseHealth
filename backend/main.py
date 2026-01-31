@@ -160,7 +160,7 @@ def home_page():
 @app.post("/register")
 def user_register(details:LoginDetails,db=Depends(get_connection)):
     try:
-        cursor=db.cursor()
+        cursor=db.cursor(buffered=True)
 
         cursor.execute("SELECT email FROM dataset WHERE email=%s",(details.email,))
         existing_email=cursor.fetchone()
@@ -188,7 +188,7 @@ def user_register(details:LoginDetails,db=Depends(get_connection)):
 @app.post("/login")
 def login_user(register_details:LoginDetails,background_tasks:BackgroundTasks,db=Depends(get_connection)):
     try:
-        cursor=db.cursor()
+        cursor=db.cursor(buffered=True)
 
         cursor.execute("SELECT email FROM dataset WHERE email=%s",(register_details.email,))
         existing_email=cursor.fetchone()
@@ -231,7 +231,7 @@ FEATURE_NAMES = [
 async def predict_health(data: HealthInput,db=Depends(get_connection),current_user:str=Depends(get_current_users)):
     try:
 
-        cursor=db.cursor()
+        cursor=db.cursor(buffered=True)
        
         bmi = data.weight / ((data.height / 100) ** 2)
         sex_val = 1 if data.sex.lower() == "male" else 0
@@ -315,7 +315,7 @@ class feedbackData(BaseModel):
 def user_feedback(feedback:feedbackData,db=Depends(get_connection),current_user:str=Depends(get_current_users)):
 
     try:
-        cursor=db.cursor()
+        cursor=db.cursor(buffered=True)
 
         cursor.execute("INSERT INTO feedbackData (currentUser,accuracy,easyToUse,rating,suggestions,duration) VALUES (%s,%s,%s,%s,%s,%s)",
                        (current_user,feedback.accuracy,feedback.easyToUse,feedback.rating,feedback.suggestions,datetime.now()))
@@ -333,7 +333,7 @@ def user_feedback(feedback:feedbackData,db=Depends(get_connection),current_user:
 @app.get("/history/{email}")
 def get_history(email:str,db=Depends(get_connection)):
     try:
-        cursor=db.cursor()
+        cursor=db.cursor(buffered=True)
 
         cursor.execute("SELECT * FROM HealthPredictData WHERE currentUser=%s",(email,))
         health_data_user=cursor.fetchall()
@@ -351,7 +351,7 @@ def get_history(email:str,db=Depends(get_connection)):
 def delete_history(id:int,userEmail:str=Depends(get_current_users),db=Depends(get_connection)):
 
     try:
-        cursor=db.cursor()
+        cursor=db.cursor(buffered=True)
 
         cursor.execute("DELETE FROM HealthPredictData WHERE id=%s and currentUser=%s",(id,userEmail))
 
