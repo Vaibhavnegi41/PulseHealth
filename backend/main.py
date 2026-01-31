@@ -37,13 +37,14 @@ oauth_scheme=OAuth2PasswordBearer(tokenUrl="login")
 
 pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
 
-def hash_password(password:str):
-    hashlib_password=hashlib.sha256(password.encode()).hexdigest()
-    return pwd_context.hash(hashlib_password)
+def hash_password(password: str):
+    cleaned = password.strip()
+    sha256_password = hashlib.sha256(cleaned.encode()).hexdigest()[:72]
+    return pwd_context.hash(sha256_password)
 
-def verify_password(plain:str,hashed:str):
-    hashlib_password=hashlib.sha256(plain.encode()).hexdigest()
-    return pwd_context.verify(hashlib_password,hashed)
+def verify_password(plain: str, hashed: str):
+    sha256_password = hashlib.sha256(plain.strip().encode()).hexdigest()[:72]
+    return pwd_context.verify(sha256_password, hashed)
 
 origins = [
     "http://localhost:5173",
