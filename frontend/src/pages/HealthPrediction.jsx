@@ -79,8 +79,7 @@ const HealthPrediction = () => {
 
       <motion.div className="glass-card" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
         <header className="card-header">
-          <div className="logo-icon">❤️</div>
-          <h1><span className='pulse-color'>Pulse</span><span className="bold">Health</span></h1>
+          <h1><span className='pulse-color'>Pulse</span><span className="bold">Health</span><span className="footer-heart">❤️</span></h1>
           <p>AI-Powered Wellness Analysis</p>
         </header>
 

@@ -10,6 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 import hashlib,joblib,numpy as np,pandas as pd
 import smtplib,os
 from email.message import EmailMessage
+from mysql.connector import pooling
 import os
 from dotenv import load_dotenv
 
@@ -38,13 +39,10 @@ oauth_scheme=OAuth2PasswordBearer(tokenUrl="login")
 pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
 
 def hash_password(password: str):
-    cleaned = password.strip()
-    sha256_password = hashlib.sha256(cleaned.encode()).hexdigest()[:72]
-    return pwd_context.hash(sha256_password)
+    return pwd_context.hash(password)
 
 def verify_password(plain: str, hashed: str):
-    sha256_password = hashlib.sha256(plain.strip().encode()).hexdigest()[:72]
-    return pwd_context.verify(sha256_password, hashed)
+    return pwd_context.verify(plain, hashed)
 
 origins = [
     "http://localhost:5173",
@@ -99,21 +97,24 @@ def map_age_category(age:int):
 
     return 13
 
+db_pool = pooling.MySQLConnectionPool(
+    pool_name="pulse_pool",
+    pool_size=5,
+    host=DB_HOST,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    database=DB_NAME,
+    port=DB_PORT
+)
+
 
 def get_connection():
-
-    connection=sql.connect(
-        host=DB_HOST,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        database=DB_NAME,
-        port=DB_PORT
-    )
-
+    connection = db_pool.get_connection()
     try:
         yield connection
     finally:
         connection.close()
+
 
 
 class LoginDetails(BaseModel):
@@ -204,10 +205,10 @@ def login_user(register_details:LoginDetails,background_tasks:BackgroundTasks,db
         
         access_token=create_access_token({"sub":register_details.email})
 
-        background_tasks.add_task(
-            send_login_email,
-            register_details.email
-        )
+        # background_tasks.add_task(
+        #     send_login_email,
+        #     register_details.email
+        # )
         
         return {
             "access_token":access_token,

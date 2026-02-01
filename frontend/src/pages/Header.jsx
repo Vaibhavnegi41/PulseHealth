@@ -32,9 +32,8 @@ const Header = () => {
 
        
         <Link to="/" className="logo">
-          <span className="footer-heart">❤️</span>
           <span className="logo-text">
-            Pulse<span className="light">Health</span>
+            Pulse<span className="light">Health<span className="footer-heart">❤️</span></span>
           </span>
         </Link>
 
