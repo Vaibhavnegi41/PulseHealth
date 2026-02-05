@@ -806,12 +806,18 @@ img{
 .card-header p { color: #64748b; font-weight: 600; font-size: 0.95rem; }
 .card-body {
   display: grid;
-  height: auto;
   grid-template-columns: 1.2fr 0.8fr;
-  flex-grow: 1;
+
   padding: 40px;
   gap: 40px;
+
+  height: auto;       
+  max-height: 80vh;    
+  overflow-y: auto;   
+
+  flex-grow: 1;
 }
+
 .section-label {
   display: block;
   font-size: 0.75rem;
@@ -914,15 +920,7 @@ input:focus, select:focus {
   flex-direction: column;
 }
 
-.card-body {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  flex-grow: 1;
-  padding: 40px;
-  gap: 40px;
-  overflow-y: auto; 
-  max-height: 80vh; 
-}
+
 .card-body::-webkit-scrollbar {
   width: 6px;
 }
