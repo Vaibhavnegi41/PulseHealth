@@ -812,7 +812,7 @@ img{
   gap: 40px;
 
   height: auto;       
-  max-height: 80vh;    
+  /* max-height: 80vh;     */
   overflow-y: auto;   
 
   flex-grow: 1;
