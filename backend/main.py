@@ -14,6 +14,7 @@ from mysql.connector import pooling
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
@@ -165,6 +166,7 @@ def user_register(details:LoginDetails,db=Depends(get_connection)):
 
         cursor.execute("SELECT email FROM dataset WHERE email=%s",(details.email,))
         existing_email=cursor.fetchone()
+
 
         if existing_email is not None:
             raise HTTPException(status_code=404,detail="Email already exists !")

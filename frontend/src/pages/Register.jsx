@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
+
+  const [isLoading,setIsLoading]=useState(false)
+
   
   const [formData, setFormData] = useState({
     email: "",
@@ -20,53 +23,61 @@ const Register = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setStatus({ message: "", type: "" });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus({ message: "", type: "" });
-
-    if (!formData.email.includes("@")) {
-      setStatus({ message: "Please enter a valid email address.", type: "error" });
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setStatus({ message: "Password must be at least 6 characters long.", type: "error" });
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      setStatus({ message: "Passwords do not match!", type: "error" });
-      return;
-    }
-
-    try {
-      const response = await api.post("/register", {
-        email: formData.email,
-        password: formData.password
-      });
-      
-      console.log(response);
-
-      setStatus({
-        message: "Registration successful! You can now log in.",
-        type: "success",
-      });
-
-      setFormData({ email: "", password: "", confirmPassword: "" });
-
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
-
-    } catch (error) {
-      let errorMessage = "Registration failed. Try again.";
-      if (error.response?.data?.detail) {
-        errorMessage = error.response.data.detail;
+      if (!formData.email.endsWith("@gmail.com")) {
+        setStatus({
+          message: "Only Gmail addresses (@gmail.com) are allowed.",
+          type: "error"
+        });
+        return;
       }
-      setStatus({ message: errorMessage, type: "error" });
-    }
-  };
+
+      if (formData.password.length < 6) {
+        setStatus({ message: "Password must be at least 6 characters long.", type: "error" });
+        return;
+      }
+
+      if (formData.password !== formData.confirmPassword) {
+        setStatus({ message: "Passwords do not match!", type: "error" });
+        return;
+      }
+
+
+      try {
+        setIsLoading(true); 
+
+        const response = await api.post("/register", {
+          email: formData.email,
+          password: formData.password
+        });
+
+        console.log(response);
+
+        setStatus({
+          message: "Registration successful! You can now log in.",
+          type: "success",
+        });
+
+        setFormData({ email: "", password: "", confirmPassword: "" });
+
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+
+      } catch (error) {
+        let errorMessage = "Registration failed. Try again.";
+        if (error.response?.data?.detail) {
+          errorMessage = error.response.data.detail;
+        }
+        setStatus({ message: errorMessage, type: "error" });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
 
   return (
     <div className="register-container">
@@ -119,8 +130,10 @@ const Register = () => {
             />
           </div>
 
-          <button type="submit" className="register-btn">
-            Register
+          <button type="submit" className="register-btn" disabled={isLoading}>
+            {
+              isLoading ? "Wait for few seconds.." : "Register"
+            }
           </button>
         </form>
       </div>
