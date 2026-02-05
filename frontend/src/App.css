@@ -811,11 +811,12 @@ img{
   padding: 40px;
   gap: 40px;
 
-  /* height: auto;        */
-  max-height: 70vh;    
-  overflow-y: auto;   
+  height: auto;
+  max-height: clamp(420px, 70vh, 650px);   /* 🔥 */
 
-  flex-grow: 1;
+  overflow-y: auto;
+
+  box-sizing: border-box;
 }
 
 .section-label {
