@@ -806,6 +806,7 @@ img{
 .card-header p { color: #64748b; font-weight: 600; font-size: 0.95rem; }
 .card-body {
   display: grid;
+  height: auto;
   grid-template-columns: 1.2fr 0.8fr;
   flex-grow: 1;
   padding: 40px;
