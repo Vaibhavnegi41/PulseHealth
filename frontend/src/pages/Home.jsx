@@ -95,7 +95,7 @@ export const Home = () => {
           <p>Diabetes Accuracy</p>
         </div>
         <div className="stat-item">
-          <h2>1k+</h2>
+          <h2>20k+</h2>
           <p>Data Records</p>
         </div>
         <div className="stat-item">

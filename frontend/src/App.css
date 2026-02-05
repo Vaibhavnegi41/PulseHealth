@@ -182,7 +182,7 @@
 .footer-heart {
   display: inline-block;
   animation: heartPulse 1.5s infinite;
-  font-size: 23px;
+  font-size: 18px;
   /* padding-bottom: 10px; */
   
 }

@@ -71,7 +71,7 @@ const Register = () => {
   return (
     <div className="register-container">
       <div className="register-card">
-        <h2><span className="pulse-color">Pulse</span>Health<span className="footer-heart">❤️</span>  Registration</h2>
+        <h2><span className="pulse-color">Pulse</span>Health Registration</h2>
         <p className="subtitle">
           Create your account to access AI-based health predictions
         </p>

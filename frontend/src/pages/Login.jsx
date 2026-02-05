@@ -65,7 +65,7 @@ export const Login = () => {
         </div>
       ) : (
         <form className="login-form" onSubmit={handleSubmit}>
-          <h2>Welcome Back To Pulse<span className='pump-heading'>Health<span className="footer-heart">❤️</span> </span> </h2>
+          <h2>Welcome Back To Pulse<span className='pump-heading'>Health</span> </h2>
           <p>Please enter your login details</p>
           
           <div className="input-group">

@@ -30,22 +30,22 @@ export const About = () => {
           <p>
             PulseHealth is an advanced diagnostic auxiliary system. We bridge the gap between raw clinical data and actionable health insights using state-of-the-art machine learning. By leveraging a dual-ensemble architecture of 400 optimized decision trees, our platform meticulously parses 15 key physiological markers to identify early warning signs of chronic conditions.
 
-Unlike traditional static assessments, PulseHealth utilizes probabilistic modeling to quantify health risks on a dynamic spectrum, providing users with a comprehensive wellness narrative rather than a simple diagnosis. Our mission is to democratize preventive healthcare, empowering individuals with the clinical-grade foresight needed to make proactive lifestyle adjustments and lead healthier, longer lives.
+           . Our mission is to democratize preventive healthcare, empowering individuals with the clinical-grade foresight needed to make proactive lifestyle adjustments and lead healthier, longer lives.
           </p>
         </motion.section>
 
         {/* Accuracy Section */}
         <motion.section variants={itemVars} className="specs-grid">
           <div className="spec-card">
-            <h3>80.15%</h3>
-            <p>Diabetes Detection Accuracy</p>
-            <div className="mini-progress"><motion.div initial={{width:0}} animate={{width:'80.15%'}} transition={{duration:1.5}} className="bar"/></div>
-          </div>
-          <div className="spec-card">
             <h3>89.61%</h3>
             <p>Heart Disease Precision</p>
             <div className="mini-progress"><motion.div initial={{width:0}} animate={{width:'89.61%'}} transition={{duration:1.5}} className="bar heart"/></div>
           </div>
+          <div className="spec-card">
+            <h3>80.5%</h3>
+            <p>Diabetes Detection Accuracy</p>
+            <div className="mini-progress"><motion.div initial={{width:0}} animate={{width:'80.15%'}} transition={{duration:1.5}} className="bar"/></div>
+            </div>
         </motion.section>
 
         {/* Methodology Section */}

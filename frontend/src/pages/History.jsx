@@ -55,7 +55,7 @@ const History = () => {
   return (
     <div className="history-container">
       <header className="history-header">
-        <h2><span className="footer-heart">❤️ </span><span className="pulse">Pulse</span><span className="health">Health</span> Prediction History</h2>
+        <h2><span className="pulse">Pulse</span><span className="health">Health</span> Prediction History</h2>
         <p>
           Records for: <span>{userEmail}</span>
         </p>
