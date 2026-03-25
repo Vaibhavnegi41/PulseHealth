@@ -6,20 +6,6 @@
 
 ---
 
-## 📌 Table of Contents
-
-- [About the Project](#about-the-project)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [API Endpoints](#api-endpoints)
-- [Screenshots](#screenshots)
-- [Future Improvements](#future-improvements)
-- [Author](#author)
-
----
-
 ## 🧠 About the Project
 
 **PulseHealth** is an AI-based health risk prediction platform that allows users to input their health parameters and receive an instant risk assessment powered by a Machine Learning model. The system analyzes factors like blood pressure, glucose levels, BMI, and age to predict potential health risks.
@@ -30,12 +16,12 @@ The goal is to make early health risk detection accessible to everyone through a
 
 ## ✨ Features
 
-- 🔐 **Secure Authentication** — JWT-based login and registration system
-- 🤖 **ML Risk Prediction** — Trained machine learning model for health risk analysis
-- 📊 **Real-time Results** — Instant prediction feedback on the frontend
-- 🗄️ **Database Integration** — User data and history stored in MySQL
-- 🚀 **Deployed & Live** — Hosted on Render for public access
-- 📱 **Responsive UI** — Clean ReactJS frontend that works on all screen sizes
+-  **Secure Authentication** — JWT-based login and registration system
+-  **ML Risk Prediction** — Trained machine learning model for health risk analysis
+-  **Real-time Results** — Instant prediction feedback on the frontend
+-  **Database Integration** — User data and history stored in MySQL
+-  **Deployed & Live** — Hosted on Render for public access
+-  **Responsive UI** — Clean ReactJS frontend that works on all screen sizes
 
 ---
 
@@ -123,24 +109,16 @@ npm install
 npm start
 ```
 
-### Access the App
-
-```
-Frontend  →  http://localhost:3000
-Backend   →  http://localhost:8000
-API Docs  →  http://localhost:8000/docs
-```
-
 ---
 
 
 ## 🔮 Future Improvements
 
-- [ ] Add more ML models and compare accuracy
-- [ ] Add visual charts for health trend tracking
-- [ ] Email notifications for high-risk predictions
-- [ ] Admin dashboard for analytics
-- [ ] Mobile app version using React Native
+-  Add more ML models and compare accuracy
+-  Add visual charts for health trend tracking
+-  Email notifications for high-risk predictions
+-  Admin dashboard for analytics
+-  Mobile app version using React Native
 
 ---
 
