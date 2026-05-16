@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 from jose import jwt 
 from datetime import datetime,timedelta
 from fastapi.security import OAuth2PasswordBearer
-import hashlib,joblib,numpy as np,pandas as pd
+import joblib,numpy as np,pandas as pd
 import smtplib,os
 from email.message import EmailMessage
 from mysql.connector import pooling
@@ -30,8 +30,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 app=FastAPI()
 
-secret_key=SECRET_KEY
 
+secret_key=SECRET_KEY
 algo="HS256"
 token_expires_minute=30
 
@@ -47,6 +47,7 @@ def verify_password(plain: str, hashed: str):
 
 origins = [
     "http://localhost:5173",
+    "http://localhost:5174",
     "http://localhost:3000",
     "https://pulsehealth-fron.onrender.com",
     "https://pulsehealth-fron.onrender.com/"
@@ -98,15 +99,24 @@ def map_age_category(age:int):
 
     return 13
 
-db_pool = pooling.MySQLConnectionPool(
-    pool_name="pulse_pool",
-    pool_size=5,
-    host=DB_HOST,
-    user=DB_USER,
-    password=DB_PASSWORD,
-    database=DB_NAME,
-    port=DB_PORT
-)
+
+# Set USE_SSL=true in .env when using TiDB Cloud, Aiven, or any SSL-required provider
+USE_SSL = os.getenv("USE_SSL", "false").lower() == "true"
+
+pool_kwargs = {
+    "pool_name": "pulse_pool",
+    "pool_size": 5,
+    "host": DB_HOST,
+    "user": DB_USER,
+    "password": DB_PASSWORD,
+    "database": DB_NAME,
+    "port": int(DB_PORT),
+}
+
+if USE_SSL:
+    pool_kwargs["ssl_disabled"] = False
+
+db_pool = pooling.MySQLConnectionPool(**pool_kwargs)
 
 
 def get_connection():
@@ -153,11 +163,6 @@ def get_current_users(token:str=Depends(oauth_scheme)):
     except:
         raise credentials_exception
 
-@app.get("/")
-def home_page():
-    return {
-        "message":"welcome to the fastapi  "
-    }
 
 @app.post("/register")
 def user_register(details:LoginDetails,db=Depends(get_connection)):
@@ -169,7 +174,7 @@ def user_register(details:LoginDetails,db=Depends(get_connection)):
 
 
         if existing_email is not None:
-            raise HTTPException(status_code=404,detail="Email already exists !")
+            raise HTTPException(status_code=409,detail="Email already exists !")
         
         cleaned_password=details.password.strip()
 
@@ -338,14 +343,11 @@ def get_history(email:str,db=Depends(get_connection)):
     try:
         cursor=db.cursor(buffered=True)
 
-        cursor.execute("SELECT * FROM HealthPredictData WHERE currentUser=%s",(email,))
-        health_data_user=cursor.fetchall()
+        cursor.execute("SELECT * FROM HealthPredictData WHERE currentUser=%s ORDER BY predictionDate DESC",(email,))
+        rows=cursor.fetchall()
+        columns=[desc[0] for desc in cursor.description]
 
-
-        if health_data_user is None:
-            raise HTTPException(status_code=400,detail="History does not exists !")
-        
-        return health_data_user
+        return [dict(zip(columns, row)) for row in rows]
     
     except Exception as e:
         raise HTTPException(status_code=400,detail=str(e))

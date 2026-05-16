@@ -41,7 +41,7 @@ const History = () => {
   try {
     await api.delete(`/history/${id}`);
 
-    setHistory((prev) => prev.filter((item) => item[0] !== id));
+    setHistory((prev) => prev.filter((item) => item.id !== id));
   } catch {
     alert("Failed to delete record");
   }
@@ -64,7 +64,7 @@ const History = () => {
       <div className="history-list">
         <AnimatePresence>
           {history.map((item, index) => {
-            const severity = Number(item[2]);
+            const severity = Number(item.healthScore);
             const risk = getRiskDetails(severity);
 
             return (
@@ -88,14 +88,14 @@ const History = () => {
                       {risk.level}
                     </div>
 
-                    <h3>{item.result}</h3>
+                    <h3>{item.patientName || item.currentUser}</h3>
 
                     <div className="meta">
                       <span>
-                        <Activity size={14} /> {item[3]}
+                        <Activity size={14} /> {item.risk}
                       </span>
                       <span>
-                        <Calendar size={14} /> {item[7]}
+                        <Calendar size={14} /> {new Date(item.predictionDate).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
@@ -105,7 +105,7 @@ const History = () => {
                     <div className="severity">
 
                       <span><strong style={{ color: risk.color }}>
-                        {item[8]}
+                        {item.patientName}
                       </strong> Health Score </span>
                       <strong style={{ color: risk.color }}>
                         {severity}%
@@ -113,7 +113,7 @@ const History = () => {
                     </div>
 
                     <button
-                      onClick={() => deleteRecord(item[0])}
+                      onClick={() => deleteRecord(item.id)}
                       className="delete-btn"
                     >
                       <Trash2 size={18} />

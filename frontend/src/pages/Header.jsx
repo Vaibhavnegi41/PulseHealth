@@ -6,10 +6,9 @@ const Header = () => {
 
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem('pulseToken'));
 
   const navigate = useNavigate();
-
-  const isLoggedIn = !!localStorage.getItem('pulseToken');
 
   
   useEffect(() => {
@@ -21,6 +20,8 @@ const Header = () => {
   
   const handleLogout = () => {
     localStorage.removeItem('pulseToken');
+    localStorage.removeItem('userEmail');
+    setIsLoggedIn(false);
     setMenuOpen(false);
     navigate('/');
     alert("Successfully logout!");

@@ -27,14 +27,6 @@ const Register = () => {
       e.preventDefault();
       setStatus({ message: "", type: "" });
 
-      if (!formData.email.endsWith("@gmail.com")) {
-        setStatus({
-          message: "Only Gmail addresses (@gmail.com) are allowed.",
-          type: "error"
-        });
-        return;
-      }
-
       if (formData.password.length < 6) {
         setStatus({ message: "Password must be at least 6 characters long.", type: "error" });
         return;
@@ -64,16 +56,20 @@ const Register = () => {
         setFormData({ email: "", password: "", confirmPassword: "" });
 
         setTimeout(() => {
-          navigate("/");
+          navigate("/login");
         }, 1000);
 
-      } catch (error) {
+      }
+       catch (error) {
         let errorMessage = "Registration failed. Try again.";
+
         if (error.response?.data?.detail) {
           errorMessage = error.response.data.detail;
         }
+        
         setStatus({ message: errorMessage, type: "error" });
-      } finally {
+      } 
+      finally {
         setIsLoading(false);
       }
     };
