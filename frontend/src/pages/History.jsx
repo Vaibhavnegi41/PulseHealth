@@ -88,7 +88,7 @@ const History = () => {
                       {risk.level}
                     </div>
 
-                    <h3>{item.patientName || item.currentUser}</h3>
+            
 
                     <div className="meta">
                       <span>
