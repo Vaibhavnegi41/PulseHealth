@@ -45,8 +45,9 @@ const HealthPrediction = () => {
     <div className="prediction-dashboard">
       <div className="dashboard-left">
         <div className="dashboard-header">
-          <h1>Health Risk Dashboard</h1>
-          <p>Complete the fields below. No scrolling required.</p>
+          <h1 className="brand-heading">PulseHealth <span className="heart-emoji">❤️</span></h1>
+          <h2 className="brand-subheading">Health Disease Prediction Analysis</h2>
+          <p className="brand-instruction">Fill the details please</p>
         </div>
 
         <form className="dashboard-form" onSubmit={handlePredict}>

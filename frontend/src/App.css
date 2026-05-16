@@ -662,17 +662,40 @@ img{
 .dashboard-header {
   margin-bottom: 25px;
 }
-.dashboard-header h1 {
-  font-size: 2.2rem;
-  color: #0f172a;
-  margin: 0 0 5px 0;
-  font-weight: 800;
+.brand-heading {
+  font-size: 2.5rem;
+  margin: 0 0 2px 0;
+  font-weight: 900;
   letter-spacing: -1px;
+  background: linear-gradient(90deg, #0ea5e9, #2563eb, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.dashboard-header p {
+.brand-heading .heart-emoji {
+  -webkit-text-fill-color: initial;
+  font-size: 2.2rem;
+  animation: pulse-heart 1.5s infinite;
+}
+.brand-subheading {
+  font-size: 1.1rem;
+  color: #334155;
+  margin: 0 0 5px 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.brand-instruction {
   margin: 0;
   color: #64748b;
-  font-size: 1rem;
+  font-size: 0.95rem;
+}
+@keyframes pulse-heart {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 .dashboard-form {
@@ -762,21 +785,22 @@ img{
 .result-box-compact {
   width: 100%;
   max-width: 380px;
+  min-height: 480px; /* Fixed height to prevent jumping */
   background: white;
   border-radius: 24px;
   padding: 30px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   text-align: center;
 }
 
 .result-box-compact.empty-state {
   justify-content: center;
   color: #64748b;
-  min-height: 300px;
 }
 .result-box-compact.empty-state h3 {
   margin: 10px 0 5px 0;
